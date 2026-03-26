@@ -60,9 +60,9 @@ export default function CategoriesPage() {
   };
 
   return (
-    <div className="space-y-2 px-4">
+    <div className="space-y-2">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <h1 className="text-2xl font-bold dark:text-white">
           Categories Management
         </h1>

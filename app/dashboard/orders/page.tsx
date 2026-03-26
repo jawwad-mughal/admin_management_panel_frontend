@@ -84,71 +84,69 @@ export default function OrdersPage() {
   );
 
   return (
-    <div className="p-6 space-y-6">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <h1 className="text-2xl font-bold dark:text-white">
-          Orders Management
-        </h1>
+  <div className="space-y-6">
+    {/* Header */}
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <h1 className="text-2xl font-bold dark:text-white">
+        Orders Management
+      </h1>
 
-        <div className="flex gap-3">
-          {/* Create Order Button */}
-    
-            <button
-              onClick={() => router.push("/dashboard/orders/create")}
-              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-            >
-              + Create Order
-            </button>
-          
+      <div className="flex gap-3">
+        <button
+          onClick={() => router.push("/dashboard/orders/create")}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
+        >
+          + Create Order
+        </button>
 
-          {/* Search */}
-          <div className="flex items-center border rounded-lg px-3 bg-white dark:bg-gray-800">
-            <FiSearch className="text-gray-400" />
-            <input
-              placeholder="Search order..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="p-2 outline-none bg-transparent dark:text-white"
-            />
-          </div>
-
-          {/* Filter */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="border rounded-lg p-2 bg-white dark:bg-gray-800 dark:text-white"
-          >
-            <option>All</option>
-            <option>Pending</option>
-            <option>Processing</option>
-            <option>Shipped</option>
-            <option>Delivered</option>
-            <option>Cancelled</option>
-          </select>
+        {/* Search */}
+        <div className="flex items-center border rounded-lg px-3 bg-white dark:bg-gray-800">
+          <FiSearch className="text-gray-400" />
+          <input
+            placeholder="Search order..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="p-2 outline-none bg-transparent dark:text-white"
+          />
         </div>
+
+        {/* Filter */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="border rounded-lg p-2 bg-white dark:bg-gray-800 dark:text-white"
+        >
+          <option>All</option>
+          <option>Pending</option>
+          <option>Processing</option>
+          <option>Shipped</option>
+          <option>Delivered</option>
+          <option>Cancelled</option>
+        </select>
       </div>
+    </div>
 
-      {/* Stats */}
-      <div className="grid md:grid-cols-6 gap-4">
-        <StatCard title="Total Orders" value={orders.length} />
-        <StatCard title="Pending" value={statusCounts["Pending"] || 0} />
-        <StatCard title="Processing" value={statusCounts["Processing"] || 0} />
-        <StatCard title="Shipped" value={statusCounts["Shipped"] || 0} />
-        <StatCard title="Delivered" value={statusCounts["Delivered"] || 0} />
-        <StatCard title="Cancelled" value={statusCounts["Cancelled"] || 0} />
-      </div>
+    {/* Stats */}
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+      <StatCard title="Total Orders" value={orders.length} />
+      <StatCard title="Pending" value={statusCounts["Pending"] || 0} />
+      <StatCard title="Processing" value={statusCounts["Processing"] || 0} />
+      <StatCard title="Shipped" value={statusCounts["Shipped"] || 0} />
+      <StatCard title="Delivered" value={statusCounts["Delivered"] || 0} />
+      <StatCard title="Cancelled" value={statusCounts["Cancelled"] || 0} />
+    </div>
 
-      {/* Loading & Error */}
-      {loading && (
-        <p className="text-center text-gray-500">Loading orders...</p>
-      )}
-      {error && <p className="text-center text-red-500">{error}</p>}
+    {/* Loading & Error */}
+    {loading && (
+      <p className="text-center text-gray-500">Loading orders...</p>
+    )}
+    {error && <p className="text-center text-red-500">{error}</p>}
 
-      {/* Table */}
-      {!loading && !error && (
-        <div className="bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+    {/* Table */}
+    {!loading && !error && (
+      <div className="bg-white dark:bg-gray-800 shadow rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[800px]">
             <thead className="bg-gray-100 dark:bg-gray-700">
               <tr className="text-left">
                 <th className="p-3">Order ID</th>
@@ -174,43 +172,25 @@ export default function OrdersPage() {
                     <td className="p-3">{o.phone}</td>
                     <td className="p-3">Rs {o.totalAmount}</td>
                     <td className="p-3">{o.paymentMethod}</td>
-                    <td className="p-3">
-                      <span
-                        className={`px-2 py-1 rounded text-xs font-semibold
-                        ${o.status === "Pending" && "bg-yellow-200 text-yellow-800"}
-                        ${o.status === "Processing" && "bg-purple-200 text-purple-800"}
-                        ${o.status === "Shipped" && "bg-blue-200 text-blue-800"}
-                        ${o.status === "Delivered" && "bg-green-200 text-green-800"}
-                        ${o.status === "Cancelled" && "bg-red-200 text-red-800"}`}
-                      >
-                        {o.status}
-                      </span>
-                    </td>
+                    <td className="p-3">{o.status}</td>
                     <td className="p-3">
                       {new Date(o.createdAt).toLocaleDateString()}
                     </td>
                     <td className="p-3 flex gap-3">
-                      {/* View */}
-                  
-                        <button
-                          onClick={() =>
-                            router.push(`/dashboard/orders/details/${o._id}`)
-                          }
-                          className="text-blue-600 hover:scale-110 transition"
-                        >
-                          <FiEye />
-                        </button>
-                
-
-                      {/* Delete */}
-                      
-                        <button
-                          onClick={() => deleteOrder(o._id)}
-                          className="text-red-600 hover:scale-110 transition"
-                        >
-                          <FiTrash2 />
-                        </button>
-                      
+                      <button
+                        onClick={() =>
+                          router.push(`/dashboard/orders/details/${o._id}`)
+                        }
+                        className="text-blue-600"
+                      >
+                        <FiEye />
+                      </button>
+                      <button
+                        onClick={() => deleteOrder(o._id)}
+                        className="text-red-600"
+                      >
+                        <FiTrash2 />
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -224,10 +204,11 @@ export default function OrdersPage() {
             </tbody>
           </table>
         </div>
-      )}
-    </div>
-  );
-}
+      </div>
+    )}
+  </div>
+);
+};
 
 // Stats Card Component
 function StatCard({ title, value }: { title: string; value: number }) {
@@ -237,4 +218,4 @@ function StatCard({ title, value }: { title: string; value: number }) {
       <h2 className="text-2xl font-bold dark:text-white mt-1">{value}</h2>
     </div>
   );
-}
+};

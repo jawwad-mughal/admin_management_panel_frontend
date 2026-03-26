@@ -260,7 +260,7 @@ export default function DashboardLayout({ children }: any) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className={`min-h-screen flex bg-gray-100 dark:bg-gray-900 ${isMobile ? "pt-16" : ""}`}>
       {isMobile && sidebar && (
         <div
           className="fixed inset-0 bg-black/40 z-30 sm:hidden"
@@ -270,13 +270,13 @@ export default function DashboardLayout({ children }: any) {
 
       {/* Sidebar */}
       <aside
-        className={`bg-white dark:bg-gray-800 dark:text-white shadow-lg border-r border-gray-200 dark:border-gray-700 transition-all duration-300 flex flex-col ${
+        className={`bg-white dark:bg-gray-800 dark:text-white shadow-lg border-r border-gray-200 dark:border-gray-700 transition-all duration-300 flex flex-col fixed bottom-0 left-0 z-40 ${
           sidebar ? "w-64" : "w-20"
-        } ${isMobile ? "fixed inset-y-0 left-0 z-40 transform" : "relative"} ${
-          isMobile ? (sidebar ? "translate-x-0" : "-translate-x-full") : "translate-x-0"
-        } sm:static sm:translate-x-0`}
+        } ${isMobile ? "top-14" : "top-0"} ${
+          isMobile ? (sidebar ? "translate-x-0" : "-translate-x-full") : ""
+        } `}
       >
-        <div className="py-4.5 px-6 border-b border-gray-200 dark:border-gray-700">
+        <div className="py-3 px-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">M</span>
@@ -289,7 +289,7 @@ export default function DashboardLayout({ children }: any) {
           </div>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
+        <nav className=" p-4 space-y-2">
           {visibleNavItems.length > 0 ? (
             visibleNavItems.map((item) => {
               const Icon = item.icon;
@@ -323,9 +323,10 @@ export default function DashboardLayout({ children }: any) {
       </aside>
 
       {/* Main Section */}
-      <div className={`flex-1 flex flex-col transition-all duration-300 ${isMobile ? "ml-0" : sidebar ? "sm:ml-64" : "sm:ml-20"}`}>
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isMobile ? "pl-0" : sidebar ? "pl-64" : "pl-20"}`}>
         {/* Navbar */}
-        <header className="bg-white dark:bg-gray-800 dark:text-white shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4 flex justify-between items-center">
+        <header className={`${isMobile ? "fixed" : "sticky"} top-0 inset-x-0 z-50 bg-white dark:bg-gray-800 dark:text-white shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-3 h-14 flex justify-between items-center`}>
+
 
   {/* Left */}
   <div className="flex items-center gap-4">
@@ -337,13 +338,13 @@ export default function DashboardLayout({ children }: any) {
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
       </svg>
     </button>
-    <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+    <h1 className="text-lg font-semibold text-gray-900 dark:text-white hidden sm:block">
       Management System
     </h1>
   </div>
 
   {/* Right */}
-  <div className="flex items-center gap-3 relative">
+  <div className="flex items-center gap-2 sm:gap-3 relative">
 
     {/* Notifications */}
     <div className="relative">
@@ -366,7 +367,7 @@ export default function DashboardLayout({ children }: any) {
       </button>
 
       {notificationOpen && (
-        <div className="absolute right-0 mt-2 w-80 max-h-96 overflow-y-auto bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50">
+        <div className={`absolute mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50 ${isMobile ? "left-0 right-0 w-auto max-h-60 overflow-y-auto" : "right-0 w-80 max-h-96 overflow-y-auto"}`}>
           <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
             <span className="font-semibold text-sm text-gray-700 dark:text-gray-200">Notifications</span>
             <button
@@ -435,7 +436,7 @@ export default function DashboardLayout({ children }: any) {
 </header>
 
         {/* Page Content */}
-        <main className="flex-1 p-6 lg:p-8 bg-gray-50 dark:bg-gray-900 ">
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900 ">
           {children}
         </main>
       </div>

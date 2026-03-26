@@ -80,7 +80,7 @@ export default function UsersPage() {
   return (
     <div className="space-y-4">
       {/* Header */}
-      <div className="flex justify-between items-center px-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <h1 className="text-2xl font-bold dark:text-white">Users Management</h1>
 
         {/* Add User Button with Tooltip */}

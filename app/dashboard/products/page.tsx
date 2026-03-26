@@ -68,7 +68,7 @@ export default function ProductsPage() {
   const outOfStock = products.filter((p) => p.stock === 0).length;
 
   return (
-    <div className="space-y-4 px-4">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
   <h1 className="text-2xl font-bold dark:text-white">
