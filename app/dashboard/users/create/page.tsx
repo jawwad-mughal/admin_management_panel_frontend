@@ -275,7 +275,7 @@ export default function CreateUserPage() {
               value={form.branch}
               onChange={handleChange}
               className="w-full border rounded-lg p-2 dark:bg-gray-700 dark:text-white"
-              required={form.role !== "User"}
+              required={ form.role === "Employee" || form.role === "BranchManager" }
             >
               <option value="">Select Branch</option>
               {branches.map((b) => (
