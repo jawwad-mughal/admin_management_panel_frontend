@@ -28,6 +28,7 @@ interface NavItem {
 export default function DashboardLayout({ children }: any) {
   const router = useRouter();
   const [sidebar, setSidebar] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -94,6 +95,25 @@ export default function DashboardLayout({ children }: any) {
 
     fetchUserRole();
   }, [router]);
+
+  // Detect mobile viewport and adjust sidebar behavior
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      setSidebar(false);
+    } else {
+      setSidebar(true);
+    }
+  }, [isMobile]);
 
   // Fetch notifications periodically
   useEffect(() => {
@@ -240,12 +260,21 @@ export default function DashboardLayout({ children }: any) {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 overflow-y-scroll">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      {isMobile && sidebar && (
+        <div
+          className="fixed inset-0 bg-black/40 z-30 sm:hidden"
+          onClick={() => setSidebar(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`bg-white dark:bg-gray-800 dark:text-white shadow-lg border-r border-gray-200 dark:border-gray-700 ${
+        className={`bg-white dark:bg-gray-800 dark:text-white shadow-lg border-r border-gray-200 dark:border-gray-700 transition-all duration-300 flex flex-col ${
           sidebar ? "w-64" : "w-20"
-        } transition-all duration-300 flex flex-col`}
+        } ${isMobile ? "fixed inset-y-0 left-0 z-40 transform" : "relative"} ${
+          isMobile ? (sidebar ? "translate-x-0" : "-translate-x-full") : "translate-x-0"
+        } sm:static sm:translate-x-0`}
       >
         <div className="py-4.5 px-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">
@@ -294,7 +323,7 @@ export default function DashboardLayout({ children }: any) {
       </aside>
 
       {/* Main Section */}
-      <div className="flex-1 flex flex-col">
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isMobile ? "ml-0" : sidebar ? "sm:ml-64" : "sm:ml-20"}`}>
         {/* Navbar */}
         <header className="bg-white dark:bg-gray-800 dark:text-white shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4 flex justify-between items-center">
 
