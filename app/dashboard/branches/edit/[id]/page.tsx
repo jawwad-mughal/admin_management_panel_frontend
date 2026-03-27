@@ -84,7 +84,7 @@ export default function EditBranchPage() {
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="max-w-md mx-auto p-4 space-y-4">
+    <div className="max-w-md mx-auto p-1 space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold dark:text-white">Edit Branch</h1>

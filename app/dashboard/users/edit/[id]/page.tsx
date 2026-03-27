@@ -251,7 +251,7 @@ export default function EditUserPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
+    <div className="max-w-md mx-auto  p-6 bg-white dark:bg-gray-800 rounded-xl shadow">
       <h1 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">Edit User</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

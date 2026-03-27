@@ -99,7 +99,7 @@ export default function DashboardLayout({ children }: any) {
   // Detect mobile viewport and adjust sidebar behavior
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth <= 600);
     };
 
     handleResize();
@@ -367,7 +367,7 @@ export default function DashboardLayout({ children }: any) {
       </button>
 
       {notificationOpen && (
-        <div className={`absolute mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50 ${isMobile ? "left-0 right-0 w-auto max-h-60 overflow-y-auto" : "right-0 w-80 max-h-96 overflow-y-auto"}`}>
+        <div className={`${isMobile ? "fixed top-14 left-0 right-0 w-full max-h-60 overflow-y-auto" : "absolute mt-2 right-0 w-80 max-h-96 overflow-y-auto"} bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg z-50`}>
           <div className="p-3 border-b border-gray-100 dark:border-gray-700 flex items-center justify-between">
             <span className="font-semibold text-sm text-gray-700 dark:text-gray-200">Notifications</span>
             <button

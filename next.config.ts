@@ -1,4 +1,6 @@
 const nextConfig = {
+  allowedDevOrigins: ["192.168.3.100"], // ✅ yahan hona chahiye
+
   images: {
     remotePatterns: [
       {

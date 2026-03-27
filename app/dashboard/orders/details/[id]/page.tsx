@@ -65,10 +65,10 @@ export default function OrderDetails() {
   if (!order) return <p className="p-6 text-gray-500">Loading...</p>;
 
   return (
-    <div className="p-6 max-w-5xl mx-auto space-y-6">
+    <div className=" max-w-5xl mx-auto space-y-2">
 
       {/* Header Card */}
-      <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-2xl shadow-lg flex justify-between items-center">
+      <div className="bg-linear-to-r from-blue-600 to-indigo-600 text-white p-4 rounded-2xl shadow-lg flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold">Order #{order._id.slice(-6)}</h1>
           <p className="text-sm opacity-80">
