@@ -12,7 +12,7 @@ export default function Home() {
       try {
         await apiClient.get("/auth/verifytoken");
         // ✅ Token valid
-        router.replace("/dashboard");
+        router.replace("/maindashboard");
       } catch {
         // ❌ Token invalid or expired
         router.replace("/login");

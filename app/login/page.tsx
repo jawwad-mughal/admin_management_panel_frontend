@@ -26,12 +26,16 @@ export default function LoginPage() {
 
     try {
       const data = await apiClient.login(form.email, form.password);
-
-      if (data.user) {
-        // Tokens and user data are automatically stored by apiClient
-        router.replace("/dashboard");
+      if (data.user.role === "BranchManager") {
+        router.replace(`/maindashboard/branches/${data.user.branch}`);
+      } else if (data.user.role === "Admin") {
+        router.replace("/maindashboard/dashboard");
+      } else if (data.user.role === "Employee") {
+        router.replace("/maindashboard");
+      } else if (data.user.role === "User") {
+        router.replace("/maindashboard");
       } else {
-        setError(data.message || "Login failed");
+        setError("Login failed");
       }
     } catch (err: any) {
       setError(err.message || "Something went wrong. Please try again.");

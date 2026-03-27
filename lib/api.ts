@@ -1,5 +1,24 @@
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+const getBaseUrl = () => {
+  if (typeof window !== "undefined") {
+    const hostname = window.location.hostname;
+
+    // Agar localhost pe open hai (laptop)
+    if (hostname === "localhost") {
+      return "http://localhost:5000/api";
+    }
+
+    // Agar mobile se open ho raha hai (same WiFi)
+    if (hostname.startsWith("192.168")) {
+      return "http://192.168.3.103:5000/api";
+    }
+  }
+
+  // fallback (production)
+  return process.env.NEXT_PUBLIC_API_URL ;
+};
+
+const API_BASE_URL = getBaseUrl();
 
 interface ApiResponse<T> {
   success?: boolean;
