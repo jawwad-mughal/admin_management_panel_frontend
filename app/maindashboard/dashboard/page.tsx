@@ -123,6 +123,15 @@ export default function DashboardPage() {
       </div>
     );
 
+    // 🔥 ADD THIS (statusConfig) — component ke andar top pe
+const statusConfig = {
+  Pending: { color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400", icon: "⏳" },
+  Processing: { color: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400", icon: "⚙️" },
+  Shipped: { color: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400", icon: "🚚" },
+  Delivered: { color: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400", icon: "✅" },
+  Cancelled: { color: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400", icon: "❌" },
+};
+
   return (
     <div className={"space-y-8"}>
       {/* Header */}
@@ -132,7 +141,7 @@ export default function DashboardPage() {
           <p className="text-gray-600 dark:text-gray-400 mt-1">Overview of your management system</p>
         </div>
         <div className="flex items-center gap-3 flex-wrap">
-          <Link href="/dashboard/settings" className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 text-sm font-medium rounded-full transition-colors">
+          <Link href="/maindashboard/settings" className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 text-sm font-medium rounded-full transition-colors">
             ⚙️ Settings
           </Link>
           <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-sm font-medium rounded-full">
@@ -193,83 +202,114 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Orders */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent Orders</h2>
-          {!isMobileTiny && <Link href="/maindashboard/orders" className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">View all →</Link>}
-        </div>
+<div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+  <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Recent Orders</h2>
+    
+      <Link href="/maindashboard/orders" className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+        View all →
+      </Link>
+    
+  </div>
 
-        {isMobileTiny ? (
-          <div className="space-y-3 p-4">
-            {recentOrders.map((order: any) => {
-              const statusConfig = {
-                Pending: { color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400", icon: "⏳" },
-                Processing: { color: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400", icon: "⚙️" },
-                Shipped: { color: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400", icon: "🚚" },
-                Delivered: { color: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400", icon: "✅" },
-                Cancelled: { color: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400", icon: "❌" },
-              };
+  {/* ✅ MOBILE → CARDS */}
+  {isMobile ? (
+    <div className="space-y-3 p-4">
+      {recentOrders.map((order: any) => {
+        const status = statusConfig[order.status as keyof typeof statusConfig] || statusConfig.Pending;
+
+        return (
+          <div key={order._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-3 flex flex-col gap-2 border border-gray-200 dark:border-gray-700">
+            
+            <div className="flex justify-between text-sm">
+              <span className="font-mono text-gray-900 dark:text-white">
+                #{order._id.slice(-8)}
+              </span>
+
+              <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full font-medium ${status.color}`}>
+                {status.icon} {order.status}
+              </span>
+            </div>
+
+            <div className="text-xs text-gray-700 dark:text-gray-300">
+              {order.customerName || order.user?.name || "Unknown"}
+            </div>
+
+            <div className="text-sm font-semibold text-gray-900 dark:text-white">
+              Amount: ${order.totalAmount?.toFixed(2) ?? 0}
+            </div>
+
+          </div>
+        );
+      })}
+    </div>
+  ) : (
+    /* ✅ DESKTOP → TABLE */
+    <div className="overflow-x-auto">
+      <table className="w-full">
+        <thead className="bg-gray-50 dark:bg-gray-700/50">
+          <tr>
+            <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+              Order ID
+            </th>
+            <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+              Customer
+            </th>
+            <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+              Amount
+            </th>
+            <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
+              Status
+            </th>
+          </tr>
+        </thead>
+
+        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          {recentOrders.length === 0 ? (
+            <tr>
+              <td colSpan={4} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">
+                No orders found
+              </td>
+            </tr>
+          ) : (
+            recentOrders.map((order: any) => {
               const status = statusConfig[order.status as keyof typeof statusConfig] || statusConfig.Pending;
 
               return (
-                <div key={order._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-3 flex flex-col gap-2 border border-gray-200 dark:border-gray-700">
-                  <div className="flex justify-between text-sm">
-                    <span className="font-mono text-gray-900 dark:text-white">#{order._id.slice(-8)}</span>
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full font-medium ${status.color}`}>
+                <tr key={order._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-sm">
+                  
+                  <td className="px-2 py-2 sm:px-6 sm:py-4 font-mono text-gray-900 dark:text-white">
+                    #{order._id.slice(-8)}
+                  </td>
+
+                  <td className="px-2 py-2 sm:px-6 sm:py-4 flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gray-400 dark:bg-gray-600 rounded-full flex items-center justify-center">
+                      <span className="text-xs font-medium text-white">
+                        {(order.customerName || order.user?.name || "U")[0].toUpperCase()}
+                      </span>
+                    </div>
+                    {order.customerName || order.user?.name || "Unknown"}
+                  </td>
+
+                  <td className="px-2 py-2 sm:px-6 sm:py-4 font-semibold text-gray-900 dark:text-white">
+                    ${order.totalAmount?.toFixed(2) ?? 0}
+                  </td>
+
+                  <td className="px-2 py-2 sm:px-6 sm:py-4">
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${status.color}`}>
                       {status.icon} {order.status}
                     </span>
-                  </div>
-                  <div className="text-xs text-gray-700 dark:text-gray-300">{order.customerName || order.user?.name || "Unknown"}</div>
-                  <div className="text-sm font-semibold text-gray-900 dark:text-white">Amount: ${order.totalAmount?.toFixed(2) ?? 0}</div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-700/50">
-                <tr>
-                  <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Order ID</th>
-                  <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Customer</th>
-                  <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Amount</th>
-                  <th className="px-2 py-2 sm:px-6 sm:py-4 text-left text-xs font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {recentOrders.length === 0 ? (
-                  <tr><td colSpan={4} className="px-6 py-12 text-center text-gray-500 dark:text-gray-400">No orders found</td></tr>
-                ) : recentOrders.map((order: any) => {
-                  const statusConfig = {
-                    Pending: { color: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400", icon: "⏳" },
-                    Processing: { color: "bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-400", icon: "⚙️" },
-                    Shipped: { color: "bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-400", icon: "🚚" },
-                    Delivered: { color: "bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400", icon: "✅" },
-                    Cancelled: { color: "bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400", icon: "❌" },
-                  };
-                  const status = statusConfig[order.status as keyof typeof statusConfig] || statusConfig.Pending;
+                  </td>
 
-                  return (
-                    <tr key={order._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors text-sm">
-                      <td className="px-2 py-2 sm:px-6 sm:py-4 font-mono text-gray-900 dark:text-white">#{order._id.slice(-8)}</td>
-                      <td className="px-2 py-2 sm:px-6 sm:py-4 flex items-center gap-2">
-                        <div className="w-8 h-8 bg-gray-400 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                          <span className="text-xs font-medium text-white">{(order.customerName || order.user?.name || "U")[0].toUpperCase()}</span>
-                        </div>
-                        {order.customerName || order.user?.name || "Unknown"}
-                      </td>
-                      <td className="px- py-2 sm:px-6 sm:py-4 font-semibold text-gray-900 dark:text-white">${order.totalAmount?.toFixed(2) ?? 0}</td>
-                      <td className="px-2 py-2 sm:px-6 sm:py-4">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${status.color}`}>{status.icon} {order.status}</span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
+                </tr>
+              );
+            })
+          )}
+        </tbody>
+      </table>
+    </div>
+  )}
+</div>
     </div>
   );
 }
