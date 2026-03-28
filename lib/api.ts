@@ -1,6 +1,6 @@
 // API base URL
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-  
+
 // const getBaseUrl = () => {
 //   if (typeof window !== "undefined") {
 //     const hostname = window.location.hostname;
@@ -17,7 +17,7 @@
 //   }
 
 //   // fallback (production)
-//   return process.env.NEXT_PUBLIC_API_URL ;
+//   return "https://admin-management-panel-backend.vercel.app/api";
 // };
 
 // const API_BASE_URL = getBaseUrl();
