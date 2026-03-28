@@ -298,7 +298,7 @@ export default function DashboardLayout({ children }: any) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setSidebar(false)}
+                    onClick={isMobile ? () => setSidebar(false) : undefined}
                   className="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 group"
                 >
                   <Icon className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" />
